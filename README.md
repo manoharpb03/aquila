@@ -13,9 +13,30 @@ I'll write more here soon!
 > [!CAUTION]
 > This package is in early development
 
-### Examples
+## What is this for?
 
-#### Simple server + Bevy
+During game development a way to serve assets remotely is often desired.
+This can be either to fetch at build-time in a build environment or to serve them to your users at runtime,
+leading to complex setups involving git LFS or Perforce and build servers or worse - manual swapping of files.
+
+This crate aims at simplifying this process by providing a simple server that can be used to serve versioned assets. 
+At the moment, it supports:
+
+- Serve assets to your game clients
+- Publish assets and manifests to a server
+- Authenticate users (custom or OAuth, see [`aquila_auth_mock`](/crates/aquila_auth_mock) and [`aquila_auth_github`](/crates/aquila_auth_github)) 
+
+## Security Notice
+
+This crate is in early development and should not be used in production yet. You are responsible for making sure your assets are safe and secure.
+If you ship public read-only tokens to users, make sure you are aware of what that entails, e.g., how to invalidate and ship new ones in the case of abuse.
+
+> [!IMPORTANT]
+> Make sure you vet any auth providers and OAuth applications and its permissions that you intend to use thoroughly before using them in production.
+
+## Examples
+
+### Simple server + Bevy
 
 ```sh
 cargo run --example simple_server --features "server fs mock_auth"
@@ -32,7 +53,7 @@ Bevy example (uses v1.0 manifest and test.png)
 cargo run --example bevy
 ```
 
-#### AWS S3
+### AWS S3
 
 You need to set the `AWS_REGION`, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` env vars and/or use the AWS cli (`aws configure`).
 
@@ -55,7 +76,7 @@ Bevy example (uses v1.0 manifest and test.png)
 cargo run --example bevy
 ```
 
-#### GitHub auth and JWT Minting (for read-only tokens)
+### GitHub auth and JWT Minting (for read-only tokens)
 
 Generate & set JWT secret:
 
@@ -146,12 +167,13 @@ fetch
 curl http://localhost:3000/assets/{hash} --output test_down.png
 ```
 
-### Notes
+
+## Notes
 
 Using generics to be able to use native async traits and avoiding dyn + `async_trait` or `Box` etc.
 I'd be willing to revisit this though if there's a better alternative.
 
-### TODO
+## TODO
 
 - add some tests
 - add some convenience features like `latest` etc.
