@@ -7,7 +7,7 @@
 [![Docs](https://docs.rs/aquila/badge.svg)](https://docs.rs/aquila/)
 [![CI](https://github.com/bevyengine/bevy/workflows/CI/badge.svg)](https://github.com/NicoZweifel/aquila/actions)
 
-A modular asset server with support for oauth and multiple file backends, meant for serving game assets but could probably be used for other things too.
+A modular asset server with support for OAuth and multiple file backends, meant for serving game assets but could probably be used for other things too.
 
 I'll write more here soon!
 
@@ -47,8 +47,11 @@ Publish v1.0 manifest and test.png
 ```shell
 cargo run -p aquila_cli -- publish --dir ./assets --version "v1.0"     
 ```
+Bevy example (uses v1.0 manifest and test.png)
 
-Now you can use the assets in bevy the same way as the simple example.
+```shell
+cargo run --example bevy
+```
 
 #### GitHub auth and JWT Minting (for read-only tokens)
 
@@ -112,7 +115,11 @@ To publish all assets and a manifest:
 ```shell
 cargo run -p aquila_cli -- publish --dir ./assets --version "v1.0"     
 ```
-Now you can use the assets in bevy the same way as the simple example.
+Bevy example (uses v1.0 manifest and test.png)
+
+```shell
+cargo run --example bevy
+```
 
 ### CLI
 
@@ -128,7 +135,7 @@ cargo run -p aquila_cli -- publish --dir ./assets --version v1.0`
 
 ### Bevy
 
-As shown above in the simple example, after publishing a manifest version, you can use the assets in bevy:
+As shown above in the other examples, after publishing a manifest version, you can use the assets in bevy:
 
 ```sh
 cargo run --example bevy
