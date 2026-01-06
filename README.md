@@ -11,7 +11,7 @@ A modular asset server with support for OAuth and multiple file backends, meant 
 I'll write more here soon!
 
 > [!CAUTION]
-> This package is in early development
+> This package is in early development!
 
 ## What is this for?
 
