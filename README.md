@@ -67,7 +67,7 @@ cargo run -p aquila_cli -- generate-secret
 set AQUILA_SECRET=...
 ```
 
-Create a [GitHub oauth app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app)
+Create a [GitHub OAuth app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app)
 
 The routes are configurable, you're going to have to make sure the callback route matches (in this case `/auth/callback`).
 
