@@ -168,7 +168,6 @@ fetch
 curl http://localhost:3000/assets/{hash} --output test_down.png
 ```
 
-
 ## Notes
 
 Using generics to be able to use native async traits and avoiding dyn + `async_trait` or `Box` etc.
@@ -183,6 +182,8 @@ I'd be willing to revisit this though if there's a better alternative.
 - readmes in crate folders
 - multiple scopes, not just read/write/admin
 - streaming large files (chunked encoding)
+- I experimented with a VCSProvider trait to verify the version of the manifest against the VCS, 
+but decided against it for now, but it definitely could be useful.
 
 ## License
 
