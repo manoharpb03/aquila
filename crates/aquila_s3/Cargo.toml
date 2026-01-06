@@ -1,0 +1,10 @@
+[package]
+name = "aquila_s3"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+aquila_core = { path = "../aquila_core" }
+aws-sdk-s3 = "1.1"
+bytes = { workspace = true }
+tracing = "0.1"

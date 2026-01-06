@@ -1,0 +1,9 @@
+[package]
+name = "aquila_fs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+aquila_core = { path = "../aquila_core" }
+bytes = { workspace = true }
+tokio = { workspace = true, features = ["fs"] }

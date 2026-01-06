@@ -1,0 +1,9 @@
+[package]
+name = "aquila_opendal"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+aquila_core = { path = "../aquila_core" }
+opendal = { version = "0.55", features = ["services-s3", "services-fs", "services-gcs", "services-azblob"] }
+bytes = { workspace = true }

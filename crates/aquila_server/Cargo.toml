@@ -1,0 +1,17 @@
+[package]
+name = "aquila_server"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+aquila_core = { path = "../aquila_core" }
+axum = { workspace = true, features = ["macros"] }
+anyhow = {workspace=true}
+bytes = {workspace=true}
+hex = {workspace = true}
+sha2 ={workspace = true}
+serde_json = {workspace = true}
+serde = {workspace = true}
+jsonwebtoken = { version = "10.2",features = ["rust_crypto"] }
+tracing = "0.1"
+tower-http = { version = "0.6", features = ["trace"] }

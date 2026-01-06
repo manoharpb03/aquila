@@ -1,0 +1,158 @@
+use aquila_client::{AquilaClient, AquilaClientError};
+use aquila_core::manifest::AssetManifest;
+use bevy::asset::io::{
+    AssetReader, AssetReaderError, AssetReaderFuture, AssetSource, AssetSourceBuilder,
+    AssetSourceId, PathStream, Reader, VecReader,
+};
+use bevy::prelude::*;
+use std::path::Path;
+use std::sync::Arc;
+use tokio::{runtime, sync::OnceCell};
+use tracing::{error, info, warn};
+
+/// Configuration for the Aquila Plugin
+#[derive(Resource, Clone)]
+pub struct AquilaConfig {
+    /// The base URL e.g. "http://localhost:3000"
+    pub url: String,
+    /// The JWT Token for authentication
+    pub token: Option<String>,
+    /// The game version to load e.g. "v1.0"
+    pub version: String,
+}
+
+pub struct AquilaPlugin {
+    pub config: AquilaConfig,
+}
+
+impl AquilaPlugin {
+    pub fn new(config: AquilaConfig) -> Self {
+        Self { config }
+    }
+}
+
+impl Plugin for AquilaPlugin {
+    fn build(&self, app: &mut App) {
+        let config = self.config.clone();
+
+        app.register_asset_source(
+            AssetSourceId::Name("aquila".into()),
+            AssetSourceBuilder::default()
+                .with_reader(move || Box::new(AquilaAssetReader::new(config.clone()))),
+        );
+    }
+}
+
+struct AquilaAssetReader {
+    client: AquilaClient,
+    target_version: String,
+    /// Lazy-loaded manifest
+    manifest: Arc<OnceCell<AssetManifest>>,
+    runtime: Arc<runtime::Runtime>,
+}
+
+impl AquilaAssetReader {
+    fn new(config: AquilaConfig) -> Self {
+        let runtime = runtime::Builder::new_multi_thread()
+            .enable_all()
+            .build()
+            .expect("Failed to create Tokio runtime for AquilaAssetReader");
+
+        Self {
+            client: AquilaClient::new(config.url, config.token),
+            target_version: config.version,
+            manifest: Arc::new(OnceCell::new()),
+            runtime: Arc::new(runtime),
+        }
+    }
+
+    /// Fetch and cache the Manifest
+    async fn get_manifest(&self) -> Result<&AssetManifest, AssetReaderError> {
+        self.manifest
+            .get_or_try_init(|| async {
+                info!(
+                    "Fetching Aquila Manifest for version: {}",
+                    self.target_version
+                );
+                let client = self.client.clone();
+                let version = self.target_version.clone();
+                let runtime = self.runtime.clone();
+
+                runtime
+                    .spawn(async move { client.fetch_manifest(&version).await })
+                    .await
+                    .map_err(|join_err| {
+                        AssetReaderError::Io(Arc::from(std::io::Error::new(
+                            std::io::ErrorKind::Other,
+                            join_err,
+                        )))
+                    })?
+                    .map_err(|e| {
+                        error!("Manifest fetch failed: {}", e);
+                        AssetReaderError::Io(Arc::from(std::io::Error::new(
+                            std::io::ErrorKind::Other,
+                            e,
+                        )))
+                    })
+            })
+            .await
+    }
+
+    async fn resolve_hash(&self, path: &Path) -> Result<String, AssetReaderError> {
+        let manifest = self.get_manifest().await?;
+        let path_str = path.to_string_lossy().replace('\\', "/");
+
+        if let Some(info) = manifest.assets.get(&path_str) {
+            Ok(info.hash.clone())
+        } else {
+            warn!("Asset not found in manifest: {}", path_str);
+            Err(AssetReaderError::NotFound(path.to_path_buf()))
+        }
+    }
+}
+
+impl AssetReader for AquilaAssetReader {
+    async fn read<'a>(&'a self, path: &'a Path) -> Result<impl Reader + 'a, AssetReaderError> {
+        let hash = self.resolve_hash(path).await?;
+        let client = self.client.clone();
+        let runtime = self.runtime.clone();
+
+        let bytes = runtime
+            .spawn(async move { client.download_file(&hash).await })
+            .await
+            .map_err(|join_err| {
+                AssetReaderError::Io(Arc::from(std::io::Error::new(
+                    std::io::ErrorKind::Other,
+                    format!("Tokio join error: {}", join_err),
+                )))
+            })?
+            .map_err(|e| match e {
+                AquilaClientError::ServerError(c, _) if c.as_u16() == 404 => {
+                    AssetReaderError::NotFound(path.to_path_buf())
+                }
+                _ => AssetReaderError::Io(Arc::from(std::io::Error::new(
+                    std::io::ErrorKind::Other,
+                    e,
+                ))),
+            })?;
+
+        Ok(VecReader::new(bytes))
+    }
+
+    async fn read_meta<'a>(&'a self, path: &'a Path) -> Result<impl Reader + 'a, AssetReaderError> {
+        let res: Result<VecReader, AssetReaderError> =
+            Err(AssetReaderError::NotFound(path.to_path_buf()));
+        res
+    }
+
+    async fn read_directory<'a>(
+        &'a self,
+        _path: &'a Path,
+    ) -> Result<Box<PathStream>, AssetReaderError> {
+        Ok(Box::new(futures_lite::stream::empty()))
+    }
+
+    async fn is_directory<'a>(&'a self, _path: &'a Path) -> Result<bool, AssetReaderError> {
+        Ok(false)
+    }
+}

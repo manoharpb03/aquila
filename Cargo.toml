@@ -1,0 +1,87 @@
+[package]
+name = "aquila"
+version = "0.1.0"
+edition = "2024"
+description = "A modular asset server with support for oauth and multiple file backends, meant for serving game assets but could probably be used for other things too."
+
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.dependencies]
+bevy = { version = "0.17", default-features = false }
+tokio = { version = "1.4", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+bytes = "1.1"
+anyhow = "1.0"
+tracing = "0.1"
+sha2 = "0.10"
+hex = "0.4"
+axum = "0.8"
+reqwest = { version = "0.13", features = ["json", "stream"] }
+
+[features]
+default = []
+
+# High-level features
+server = ["dep:aquila_server"]
+client = ["dep:aquila_client"]
+
+# Implementation features
+fs= ["dep:aquila_fs"]
+mock_auth = ["dep:aquila_auth_mock"]
+github_auth = ["dep:aquila_auth_github"]
+s3 = ["dep:aquila_s3"]
+opendal = ["dep:aquila_opendal"]
+
+# "Batteries included"
+full = ["server", "client", "fs", "mock_auth"]
+
+[dependencies]
+aquila_core = { path = "crates/aquila_core" }
+aquila_server = { path = "crates/aquila_server", optional = true }
+aquila_client = { path = "crates/aquila_client", optional = true }
+aquila_fs = { path = "crates/aquila_fs", optional = true }
+aquila_s3 = { path = "crates/aquila_s3", optional = true }
+aquila_opendal = { path = "crates/aquila_opendal", optional = true }
+aquila_auth_mock = { path = "crates/aquila_auth_mock", optional = true }
+aquila_auth_github= { path = "crates/aquila_auth_github", optional = true }
+
+# Dependencies needed for the root prelude/re-exports if any types leak
+tokio = { version = "1", features = ["full"], optional = true }
+
+[dev-dependencies]
+axum = { workspace = true, features = ["macros"] }
+tokio = { workspace = true, features = ["full"] }
+chrono = {workspace = true}
+anyhow = {workspace = true}
+opendal = { version = "0.55", features = ["services-s3", "services-fs", "services-gcs", "services-azblob"] }
+tracing-subscriber = "0.3"
+aws-config = "1.1"
+aws-sdk-s3 = "1.1"
+bevy_aquila ={path = "crates/bevy_aquila"}
+bevy = {version = "0.17"}
+
+[[example]]
+name = "simple_server"
+required-features =["server", "fs", "mock_auth"]
+
+[[example]]
+name = "simple_client"
+required-features =["client"]
+
+[[example]]
+name = "s3_server"
+required-features = ["server", "s3", "mock_auth"]
+
+[[example]]
+name = "github_auth_server"
+required-features = ["server", "fs", "github_auth"]
+
+[[example]]
+name = "opendal_server"
+required-features = ["server", "opendal", "mock_auth"]
+
+

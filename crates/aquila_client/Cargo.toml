@@ -1,0 +1,15 @@
+[package]
+name = "aquila_client"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+aquila_core = { path = "../aquila_core" }
+reqwest = {workspace = true}
+tokio = { workspace = true, features = ["fs"] }
+anyhow = { workspace = true }
+sha2 = {workspace = true}
+hex = {workspace = true}
+thiserror = "2.0"
+serde = { version = "1.0.228", features = ["derive"] }
+

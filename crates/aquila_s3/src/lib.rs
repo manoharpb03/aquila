@@ -1,0 +1,158 @@
+use aquila_core::prelude::*;
+use aws_sdk_s3::Client;
+use aws_sdk_s3::error::SdkError;
+use aws_sdk_s3::primitives::ByteStream;
+use bytes::Bytes;
+use tracing::{debug, error, instrument};
+
+#[derive(Clone)]
+pub struct S3Storage {
+    client: Client,
+    bucket: String,
+    prefix: String,
+}
+
+impl S3Storage {
+    pub fn new(client: Client, bucket: String, prefix: Option<String>) -> Self {
+        Self {
+            client,
+            bucket,
+            prefix: prefix.unwrap_or_default(),
+        }
+    }
+
+    fn key(&self, path: &str) -> String {
+        self.prefix
+            .is_empty()
+            .then(|| path.to_string())
+            .unwrap_or(format!("{}{path}", self.prefix))
+    }
+}
+
+impl StorageBackend for S3Storage {
+    #[instrument(skip(self, data), fields(bucket = %self.bucket, key))]
+    async fn write_blob(&self, hash: &str, data: Bytes) -> Result<bool, StorageError> {
+        let key = self.key(hash);
+        tracing::Span::current().record("key", &key);
+
+        let exists = self
+            .client
+            .head_object()
+            .bucket(&self.bucket)
+            .key(&key)
+            .send()
+            .await;
+
+        if exists.is_ok() {
+            debug!("Blob already exists in S3");
+            return Ok(false);
+        }
+
+        debug!("Uploading new blob to S3...");
+        self.client
+            .put_object()
+            .bucket(&self.bucket)
+            .key(&key)
+            .body(ByteStream::from(data))
+            .send()
+            .await
+            .map_err(|e| {
+                error!("Failed to upload blob: {e:?}");
+                StorageError::Generic(format!("S3 Upload Error: {e:?}"))
+            })?;
+
+        debug!("Upload successful");
+        Ok(true)
+    }
+
+    #[instrument(skip(self, data), fields(bucket = %self.bucket, key))]
+    async fn write_manifest(&self, version: &str, data: Bytes) -> Result<(), StorageError> {
+        let path = self.get_manifest_path(version);
+        let key = self.key(&path);
+        tracing::Span::current().record("key", &key);
+
+        debug!("Uploading manifest...");
+        self.client
+            .put_object()
+            .bucket(&self.bucket)
+            .key(&key)
+            .body(ByteStream::from(data))
+            .send()
+            .await
+            .map_err(|e| {
+                error!("Failed to upload manifest: {:?}", e);
+                StorageError::Generic(format!("S3 Manifest Upload Error: {:?}", e))
+            })?;
+
+        Ok(())
+    }
+
+    #[instrument(skip(self), fields(bucket = %self.bucket, key))]
+    async fn read_file(&self, path: &str) -> Result<Bytes, StorageError> {
+        let key = self.key(path);
+        tracing::Span::current().record("key", &key);
+
+        debug!("Reading file from S3...");
+        let res = self
+            .client
+            .get_object()
+            .bucket(&self.bucket)
+            .key(&key)
+            .send()
+            .await;
+
+        match res {
+            Ok(output) => {
+                let data = output.body.collect().await.map_err(|e| {
+                    error!("Failed to stream body: {:?}", e);
+                    StorageError::Generic(format!("Failed to stream S3 body: {}", e))
+                })?;
+                Ok(data.into_bytes())
+            }
+            Err(SdkError::ServiceError(err)) => {
+                let inner = err.err();
+                if inner.is_no_such_key() {
+                    debug!("File not found in S3");
+                    Err(StorageError::NotFound(path.to_string()))
+                } else {
+                    error!("S3 Service Error during read: {:?}", err);
+                    Err(StorageError::Generic(format!(
+                        "S3 Service Error: {:?}",
+                        inner
+                    )))
+                }
+            }
+            Err(e) => {
+                error!("Unexpected S3 Error: {:?}", e);
+                Err(StorageError::Generic(format!("S3 Error: {:?}", e)))
+            }
+        }
+    }
+
+    async fn exists(&self, path: &str) -> Result<bool, StorageError> {
+        let key = self.key(path);
+        let res = self
+            .client
+            .head_object()
+            .bucket(&self.bucket)
+            .key(&key)
+            .send()
+            .await;
+
+        match res {
+            Ok(_) => Ok(true),
+            Err(SdkError::ServiceError(err)) => err
+                .err()
+                .is_not_found()
+                .then(|| Ok(false))
+                .unwrap_or_else(|| {
+                    error!("S3 Head Object Error: {:?}", err);
+                    Err(StorageError::Generic(format!(
+                        "S3 Service Error: {:?}",
+                        err
+                    )))
+                }),
+            Err(e) => Err(StorageError::Generic(format!("S3 Error: {e}"))),
+        }
+    }
+}
