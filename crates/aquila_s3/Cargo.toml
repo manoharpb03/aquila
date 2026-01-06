@@ -1,13 +1,13 @@
 [package]
 name = "aquila_s3"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2024"
 description = "Aquila asset server s3 file backend implementation"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/NicoZweifel/aquila"
 
 [dependencies]
-aquila_core = { path = "../aquila_core" ,version = "0.2.0"}
+aquila_core = { path = "../aquila_core" ,version = "0.3.0"}
 aws-sdk-s3 = "1.1"
 hyper = { version = "0.14", features = ["stream"] }
 bytes = { workspace = true }
