@@ -265,7 +265,7 @@
 //! - multiple scopes, not just read/write/admin
 //! - streaming large files (chunked encoding)
 //! - I experimented with a VCSProvider trait to verify the version of the manifest against the VCS,
-//! but decided against it for now, but it definitely could be useful.
+//!   but decided against it for now, but it definitely could be useful.
 //!
 //! ## License
 //!
