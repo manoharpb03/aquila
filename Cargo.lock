@@ -1190,7 +1190,9 @@ version = "0.1.0"
 dependencies = [
  "aquila_client",
  "aquila_core",
- "bevy",
+ "bevy_app",
+ "bevy_asset",
+ "bevy_ecs",
  "futures-lite",
  "tokio",
  "tracing",

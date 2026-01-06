@@ -9,7 +9,9 @@ repository = "https://github.com/NicoZweifel/aquila"
 [dependencies]
 aquila_client = { path = "../aquila_client",version = "0.1.0" }
 aquila_core = { path = "../aquila_core" ,version = "0.1.0"}
-bevy = { version = "0.17", default-features = false, features = ["bevy_asset", "bevy_render", "bevy_core_pipeline", "bevy_sprite", "bevy_winit", "x11", "tonemapping_luts", "bevy_ui", "png"] }
+bevy_asset = { version = "0.17" }
+bevy_ecs= { version = "0.17" }
+bevy_app ={version = "0.17"}
 futures-lite = "2.0"
 tokio = { version = "1.49", features = ["sync", "rt-multi-thread"] }
 tracing = "0.1"

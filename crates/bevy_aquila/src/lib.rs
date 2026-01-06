@@ -1,10 +1,11 @@
 use aquila_client::{AquilaClient, AquilaClientError};
 use aquila_core::manifest::AssetManifest;
-use bevy::asset::io::{
-    AssetReader, AssetReaderError, AssetReaderFuture, AssetSource, AssetSourceBuilder,
-    AssetSourceId, PathStream, Reader, VecReader,
+use bevy_app::prelude::*;
+use bevy_asset::AssetApp;
+use bevy_asset::io::{
+    AssetReader, AssetReaderError, AssetSourceBuilder, AssetSourceId, PathStream, Reader, VecReader,
 };
-use bevy::prelude::*;
+use bevy_ecs::prelude::*;
 use std::path::Path;
 use std::sync::Arc;
 use tokio::{runtime, sync::OnceCell};
@@ -82,17 +83,11 @@ impl AquilaAssetReader {
                     .spawn(async move { client.fetch_manifest(&version).await })
                     .await
                     .map_err(|join_err| {
-                        AssetReaderError::Io(Arc::from(std::io::Error::new(
-                            std::io::ErrorKind::Other,
-                            join_err,
-                        )))
+                        AssetReaderError::Io(Arc::from(std::io::Error::other(join_err)))
                     })?
                     .map_err(|e| {
                         error!("Manifest fetch failed: {}", e);
-                        AssetReaderError::Io(Arc::from(std::io::Error::new(
-                            std::io::ErrorKind::Other,
-                            e,
-                        )))
+                        AssetReaderError::Io(Arc::from(std::io::Error::other(e)))
                     })
             })
             .await
@@ -121,19 +116,16 @@ impl AssetReader for AquilaAssetReader {
             .spawn(async move { client.download_file(&hash).await })
             .await
             .map_err(|join_err| {
-                AssetReaderError::Io(Arc::from(std::io::Error::new(
-                    std::io::ErrorKind::Other,
-                    format!("Tokio join error: {}", join_err),
-                )))
+                AssetReaderError::Io(Arc::from(std::io::Error::other(format!(
+                    "Tokio join error: {}",
+                    join_err
+                ))))
             })?
             .map_err(|e| match e {
                 AquilaClientError::ServerError(c, _) if c.as_u16() == 404 => {
                     AssetReaderError::NotFound(path.to_path_buf())
                 }
-                _ => AssetReaderError::Io(Arc::from(std::io::Error::new(
-                    std::io::ErrorKind::Other,
-                    e,
-                ))),
+                _ => AssetReaderError::Io(Arc::from(std::io::Error::other(e))),
             })?;
 
         Ok(VecReader::new(bytes))
