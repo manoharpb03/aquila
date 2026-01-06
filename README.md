@@ -110,7 +110,7 @@ use aquila::prelude::*;
 #[tokio::main]
 async fn main() {
     let storage = FileSystemStorage::new("./assets");
-     let auth = AllowAllAuth;
+    let auth = AllowAllAuth;
 
     // Build
     let app = AquilaServer::default().build(storage, auth);
