@@ -5,7 +5,7 @@
 //! A command-line interface for managing the Aquila Asset Server.
 //!
 //! Allows developers and CI/CD pipelines to interact with an Aquila instance
-//! to upload assets, publish versions and minting tokens.
+//! to upload assets, publish versions and manage tokens.
 //!
 //! **NOTE**: This tool requires a running instance of the Aquila server.
 //!

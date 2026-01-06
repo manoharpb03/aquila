@@ -8,8 +8,6 @@
 
 A modular asset server with support for OAuth and multiple file backends, meant for serving game assets but could probably be used for other things too.
 
-I'll write more here soon!
-
 > [!CAUTION]
 > This package is in early development!
 
@@ -34,6 +32,35 @@ If you ship public read-only tokens to users, make sure you are aware of what th
 
 > [!IMPORTANT]
 > Make sure you vet any auth providers and OAuth applications and its permissions that you intend to use thoroughly before using them in production.
+
+## Ecosystem
+
+The workspace is composed of modular crates, allowing you to pick and choose the components you need.
+
+### Core & Integration
+
+| Crate | Description |
+|-------|-------------|
+| [`aquila_core`](./crates/aquila_core) | Shared types (`AssetManifest`) and traits (`StorageBackend`, `AuthProvider`) used across the ecosystem. |
+| [`aquila_server`](./crates/aquila_server) | The Axum-based server implementation. Can be used as a library to build custom servers. |
+| [`bevy_aquila`](./crates/bevy_aquila) | The Bevy plugin. Registers the `aquila://` asset source and handles streaming. |
+| [`aquila_client`](./crates/aquila_client) | Async HTTP client library. Used by the CLI and generic tools to interact with the server. |
+| [`aquila_cli`](./crates/aquila_cli) | Command-line interface for uploading assets, publishing versions, and managing tokens. |
+
+### Storage Backends
+
+| Crate | Description                                                                                               |
+|-------|-----------------------------------------------------------------------------------------------------------|
+| [`aquila_fs`](./crates/aquila_fs) | Local filesystem storage. Stores assets safely using atomic writes.                                       |
+| [`aquila_s3`](./crates/aquila_s3) | AWS S3 storage backend using the official AWS SDK.                                                        |
+| [`aquila_opendal`](./crates/aquila_opendal) | Backend for [Apache OpenDAL](https://opendal.apache.org/), supporting AWS S3, GCS, Azure and more. |
+
+### Authentication
+
+| Crate | Description |
+|-------|-------------|
+| [`aquila_auth_github`](./crates/aquila_auth_github) | OAuth2 provider for GitHub. Supports organization membership checks. |
+| [`aquila_auth_mock`](./crates/aquila_auth_mock) | **Dev Only**. A mock provider that allows any token to pass with admin privileges. |
 
 ## Feature Flags
 
