@@ -11,9 +11,9 @@ use axum::{
     Router,
     routing::{get, post},
 };
-use tower_http::trace::TraceLayer;
 use jwt::JwtService;
 use state::AppState;
+use tower_http::trace::TraceLayer;
 
 /// The builder for the Aquila Server.
 pub struct AquilaServer {
@@ -78,8 +78,8 @@ impl AquilaServer {
 }
 
 pub mod prelude {
-    pub use crate::{AquilaServer, AquilaSeverConfig};
     pub use crate::auth::*;
     pub use crate::jwt::*;
     pub use crate::state::*;
+    pub use crate::{AquilaServer, AquilaSeverConfig};
 }

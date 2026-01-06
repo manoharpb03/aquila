@@ -51,7 +51,7 @@ pub mod prelude {
     pub use aquila_auth_mock::AllowAllAuth;
 
     #[cfg(feature = "github_auth")]
-    pub use aquila_auth_github::{GithubAuthProvider,GithubConfig};
+    pub use aquila_auth_github::{GithubAuthProvider, GithubConfig};
 
     #[cfg(feature = "s3")]
     pub use aquila_s3::S3Storage;
