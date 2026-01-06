@@ -30,6 +30,11 @@ pub mod opendal {
     pub use aquila_opendal::*;
 }
 
+#[cfg(feature = "github_auth")]
+pub mod auth_github {
+    pub use aquila_auth_github::*;
+}
+
 pub mod prelude {
     pub use aquila_core::prelude::*;
 
@@ -46,7 +51,7 @@ pub mod prelude {
     pub use aquila_auth_mock::AllowAllAuth;
 
     #[cfg(feature = "github_auth")]
-    pub use aquila_auth_github::GithubAuthProvider;
+    pub use aquila_auth_github::{GithubAuthProvider,GithubConfig};
 
     #[cfg(feature = "s3")]
     pub use aquila_s3::S3Storage;

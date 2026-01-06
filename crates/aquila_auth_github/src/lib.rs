@@ -9,7 +9,6 @@ use std::time::{Duration, Instant};
 #[derive(Deserialize, Debug, Clone)]
 struct GithubUser {
     login: String,
-    id: u64,
 }
 
 struct CachedUser {

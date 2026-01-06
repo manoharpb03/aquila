@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use bevy_aquila::{AquilaConfig, AquilaPlugin};
+use bevy_aquila::*;
 
 fn main() {
     let token = std::env::var("AQUILA_TOKEN").ok();

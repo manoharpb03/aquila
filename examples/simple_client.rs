@@ -1,5 +1,4 @@
 use aquila::prelude::*;
-use aquila_core::manifest::{AssetInfo, AssetManifest};
 use std::collections::HashMap;
 use std::path::Path;
 use tokio::fs;

@@ -1,11 +1,3 @@
-use aquila_core::traits::{AuthProvider, StorageBackend};
-use axum::extract::DefaultBodyLimit;
-use axum::{
-    Router,
-    routing::{get, post},
-};
-use tower_http::trace::TraceLayer;
-
 mod api;
 
 pub mod jwt;
@@ -13,7 +5,14 @@ pub mod jwt;
 pub mod auth;
 pub mod state;
 
-use crate::jwt::JwtService;
+use aquila_core::traits::{AuthProvider, StorageBackend};
+use axum::extract::DefaultBodyLimit;
+use axum::{
+    Router,
+    routing::{get, post},
+};
+use tower_http::trace::TraceLayer;
+use jwt::JwtService;
 use state::AppState;
 
 /// The builder for the Aquila Server.
@@ -32,19 +31,6 @@ impl Default for AquilaServer {
 impl AquilaServer {
     pub fn new(config: AquilaSeverConfig) -> Self {
         Self { config }
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct AuthRoutes {
-    callback: String,
-}
-
-impl Default for AuthRoutes {
-    fn default() -> Self {
-        Self {
-            callback: "/auth/callback".to_string(),
-        }
     }
 }
 
@@ -79,8 +65,8 @@ impl AquilaServer {
 
         Router::new()
             .route("/auth/login", get(api::auth_login))
-            .route(callback.as_str(), get(api::auth_callback))
             .route("/auth/token", post(api::issue_token))
+            .route(callback.as_str(), get(api::auth_callback))
             .route("/assets/{hash}", get(api::download_asset))
             .route("/assets", post(api::upload_asset))
             .route("/manifest/{version}", get(api::get_manifest))
@@ -92,7 +78,7 @@ impl AquilaServer {
 }
 
 pub mod prelude {
-    pub use crate::AquilaServer;
+    pub use crate::{AquilaServer, AquilaSeverConfig};
     pub use crate::auth::*;
     pub use crate::jwt::*;
     pub use crate::state::*;

@@ -1,7 +1,4 @@
 use aquila::prelude::*;
-use aquila_auth_github::GithubConfig;
-use aquila_server::AquilaSeverConfig;
-use aws_config::BehaviorVersion;
 use std::env;
 
 #[tokio::main]
