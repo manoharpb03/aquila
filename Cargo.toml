@@ -3,6 +3,8 @@ name = "aquila"
 version = "0.1.0"
 edition = "2024"
 description = "A modular asset server with support for oauth and multiple file backends, meant for serving game assets but could probably be used for other things too."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/NicoZweifel/aquila"
 
 [workspace]
 resolver = "3"
