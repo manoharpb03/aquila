@@ -19,7 +19,7 @@ During game development a way to serve assets remotely is often desired.
 This can be either to fetch at build-time in a build environment or to serve them to your users at runtime,
 leading to complex setups involving git LFS or Perforce and build servers or worse - manual swapping of files.
 
-This crate aims at simplifying this process by providing a simple server that can be used to serve versioned assets. 
+This crate aims at simplifying this process by providing a simple server, a client and a cli that can be used to serve versioned assets. 
 At the moment, it supports:
 
 - Serve assets to your game clients
