@@ -236,7 +236,7 @@
 //! cargo run --example bevy
 //! ```
 //!
-//! ### Server
+//! ### Server curl tests
 //!
 //! test manually
 //!
