@@ -1,4 +1,7 @@
 //! # Aquila Core
+//! [![Crates.io](https://img.shields.io/crates/v/aquila_core.svg)](https://crates.io/crates/aquila_core)
+//! [![Downloads](https://img.shields.io/crates/d/aquila_core.svg)](https://crates.io/crates/aquila_core)
+//! [![Docs](https://docs.rs/aquila_core/badge.svg)](https://docs.rs/aquila_core/)
 //!
 //! Types and traits for the Aquila asset server ecosystem.
 //!
