@@ -5,7 +5,7 @@
 [![Docs](https://docs.rs/aquila/badge.svg)](https://docs.rs/aquila/)
 [![CI](https://github.com/bevyengine/bevy/workflows/CI/badge.svg)](https://github.com/NicoZweifel/aquila/actions)
 
-> *Your personal flying asset courier*
+> *Your personal flying courier*
 
 A modular asset server with support for OAuth and multiple file backends, meant for serving game assets but could probably be used for other things too.
 
