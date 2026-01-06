@@ -157,16 +157,16 @@ impl StorageBackend for S3Storage {
         }
 
         debug!("Streaming upload to S3...");
-        let (tx, rx) = mpsc::channel(2);
+        let (sender, receiver) = mpsc::channel(2);
         tokio::spawn(async move {
             while let Some(res) = stream.next().await {
-                if tx.send(res).await.is_err() {
+                if sender.send(res).await.is_err() {
                     break;
                 }
             }
         });
 
-        let sync_stream = ChannelStream(rx);
+        let sync_stream = ChannelStream(receiver);
         let byte_stream = ByteStream::new(SdkBody::from_body_1_x(StreamBody::new(
             sync_stream.map_ok(Frame::data),
         )));
