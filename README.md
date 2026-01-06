@@ -167,7 +167,7 @@ I'd be willing to revisit this though if there's a better alternative.
 
 - add some tests
 - add some convenience features like `latest` etc.
-- docker images, flakes
+- docker images, nix flakes
 
 ## License
 
