@@ -49,20 +49,17 @@ aquila_opendal = { path = "crates/aquila_opendal", optional = true }
 aquila_auth_mock = { path = "crates/aquila_auth_mock", optional = true }
 aquila_auth_github= { path = "crates/aquila_auth_github", optional = true }
 
-# Dependencies needed for the root prelude/re-exports if any types leak
-tokio = { version = "1", features = ["full"], optional = true }
-
 [dev-dependencies]
-axum = { workspace = true, features = ["macros"] }
-tokio = { workspace = true, features = ["full"] }
+bevy = {version = "0.17"}
+bevy_aquila ={path = "crates/bevy_aquila"}
+axum = { workspace = true }
+tokio = { workspace = true }
 chrono = {workspace = true}
 anyhow = {workspace = true}
-opendal = { version = "0.55", features = ["services-s3", "services-fs", "services-gcs", "services-azblob"] }
+opendal = { version = "0.55"}
 tracing-subscriber = "0.3"
 aws-config = "1.1"
 aws-sdk-s3 = "1.1"
-bevy_aquila ={path = "crates/bevy_aquila"}
-bevy = {version = "0.17"}
 
 [[example]]
 name = "simple_server"
