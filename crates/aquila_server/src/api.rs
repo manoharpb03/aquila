@@ -250,12 +250,15 @@ pub async fn issue_token<S: StorageBackend, A: AuthProvider>(
     AuthenticatedUser(user): AuthenticatedUser,
     Json(req): Json<CreateTokenRequest>,
 ) -> Result<impl IntoResponse, ApiError> {
-    check_scope(&user, "admin")?;
+    check_scope(&user, "write")?;
 
     let scopes = req.scopes.unwrap_or_else(|| vec!["read".to_string()]);
-    if scopes.contains(&"admin".to_string()) {
+    if scopes
+        .iter()
+        .any(|s| matches!(s.as_str(), "admin" | "write"))
+    {
         return Err(ApiError::from(AuthError::Forbidden(
-            "Cannot mint admin tokens.".into(),
+            "Cannot mint admin/write tokens.".into(),
         )));
     }
 
