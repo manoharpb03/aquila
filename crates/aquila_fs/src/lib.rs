@@ -88,8 +88,8 @@ impl StorageBackend for FileSystemStorage {
             .map_err(StorageError::Io)?;
 
         use tokio::io::AsyncWriteExt;
-        while let Some(r_chunk) = stream.next().await {
-            let chunk = r_chunk.map_err(StorageError::Io)?;
+        while let Some(res) = stream.next().await {
+            let chunk = res.map_err(StorageError::Io)?;
             file.write_all(&chunk).await.map_err(StorageError::Io)?;
         }
         file.flush().await.map_err(StorageError::Io)?;
