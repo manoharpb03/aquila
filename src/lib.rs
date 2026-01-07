@@ -158,6 +158,14 @@
 //! ```shell
 //! aquila publish ./assets --version "v1.0" --stream
 //! ```
+//! #### Updating/Publishing old manifests
+//! ```shell
+//! aquila publish ./assets --version "v0.1" --no-latest
+//! ```
+//! #### Short args are supported, see --help or -h
+//! ```shell
+//! aquila publish ./assets -v "v1.0" -s -n
+//! ```
 //! Bevy example (uses v1.0 manifest and test.png)
 //!
 //! ```shell
