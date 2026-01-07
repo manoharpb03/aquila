@@ -28,7 +28,7 @@ App::new()
 
 | bevy | bevy_aquila |
 |---|---|
-| 0.17 | 0.3 |
+| 0.17 | 0.5 |
 
 
 License: MIT OR Apache-2.0
