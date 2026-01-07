@@ -251,7 +251,7 @@ dependencies = [
 
 [[package]]
 name = "aquila"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "aquila_auth_github",
@@ -297,7 +297,7 @@ dependencies = [
 
 [[package]]
 name = "aquila_cli"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "aquila_client",
@@ -314,7 +314,7 @@ dependencies = [
 
 [[package]]
 name = "aquila_client"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "aquila_core",
@@ -375,7 +375,7 @@ dependencies = [
 
 [[package]]
 name = "aquila_server"
-version = "0.3.1"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "aquila_core",
@@ -1195,7 +1195,7 @@ dependencies = [
 
 [[package]]
 name = "bevy_aquila"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "aquila_client",
  "aquila_core",
