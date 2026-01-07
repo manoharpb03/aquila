@@ -251,7 +251,7 @@ dependencies = [
 
 [[package]]
 name = "aquila"
-version = "0.5.1"
+version = "0.6.0"
 dependencies = [
  "anyhow",
  "aquila_auth_github",
@@ -341,7 +341,7 @@ dependencies = [
 
 [[package]]
 name = "aquila_fs"
-version = "0.3.0"
+version = "0.6.0"
 dependencies = [
  "aquila_core",
  "bytes",
@@ -361,7 +361,7 @@ dependencies = [
 
 [[package]]
 name = "aquila_s3"
-version = "0.4.0"
+version = "0.6.0"
 dependencies = [
  "aquila_core",
  "aws-sdk-s3",
@@ -1195,7 +1195,7 @@ dependencies = [
 
 [[package]]
 name = "bevy_aquila"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "aquila_client",
  "aquila_core",
