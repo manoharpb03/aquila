@@ -11,24 +11,32 @@ use tracing::warn;
 /// The builder for the Aquila Server.
 #[derive(Clone, Debug, Default)]
 pub struct AquilaServer {
-    config: AquilaSeverConfig,
+    config: AquilaServerConfig,
 }
 
 impl AquilaServer {
-    pub fn new(config: AquilaSeverConfig) -> Self {
+    pub fn new(config: AquilaServerConfig) -> Self {
         Self { config }
     }
 }
 
 #[derive(Clone, Debug)]
-pub struct AquilaSeverConfig {
+pub struct AquilaServerConfig {
+    /// The secret used to for JWT tokens.
+    ///
+    /// Defaults to `TOP_SECRET`.
+    ///
+    /// **NOTE:** This should be set to a secure value!
     pub jwt_secret: String,
+    /// The callback URL for the auth provider.
+    ///
+    /// Defaults to `/auth/callback`.
     pub callback: String,
 }
 
 const DEFAULT_SECRET: &str = "TOP_SECRET";
 
-impl Default for AquilaSeverConfig {
+impl Default for AquilaServerConfig {
     fn default() -> Self {
         Self {
             jwt_secret: DEFAULT_SECRET.to_string(),
@@ -39,7 +47,7 @@ impl Default for AquilaSeverConfig {
 
 impl AquilaServer {
     pub fn build<S: StorageBackend, A: AuthProvider>(self, storage: S, auth: A) -> Router {
-        let AquilaSeverConfig {
+        let AquilaServerConfig {
             jwt_secret,
             callback,
             ..
