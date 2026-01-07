@@ -96,7 +96,7 @@ enum Commands {
 
         /// Don't update the 'latest' version tag.
         /// Use this when publishing patches for older versions.
-        #[arg(short, long, default_value = "true")]
+        #[arg(short, long)]
         no_latest: bool,
     },
     /// Download a file by hash

@@ -24,7 +24,7 @@ fn main() {
         .insert_resource(AquilaConfig {
             url,
             token,
-            version: "v1.0".to_string(),
+            version: "latest".to_string(),
         })
         .add_plugins(AquilaPlugin)
         .add_plugins(DefaultPlugins)

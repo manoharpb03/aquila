@@ -92,7 +92,7 @@
 //!
 //! ### Bevy
 //!
-//! Bevy example (uses v1.0 manifest and test.png)
+//! Bevy example (uses latest manifest and test.png)
 //!
 //! ```shell
 //! cargo run --example bevy
@@ -166,7 +166,7 @@
 //! ```shell
 //! aquila publish ./assets -v "v1.0" -s -n
 //! ```
-//! Bevy example (uses v1.0 manifest and test.png)
+//! Bevy example (uses latest manifest and test.png)
 //!
 //! ```shell
 //! cargo run --example bevy
@@ -223,7 +223,7 @@
 //! ```shell
 //! aquila publish ./assets --version "v1.0"
 //! ```
-//! Bevy example (uses v1.0 manifest and test.png)
+//! Bevy example (uses latest manifest and test.png)
 //!
 //! ```shell
 //! cargo run --example bevy
