@@ -228,10 +228,11 @@ impl AquilaClient {
         Ok(local_hash)
     }
 
-    pub async fn publish_manifest(&self, manifest: &AssetManifest) -> Result<()> {
+    pub async fn publish_manifest(&self, manifest: &AssetManifest, latest: bool) -> Result<()> {
         let url = format!("{}/manifest", self.base_url);
         let response = self
             .auth_request(self.client.post(&url))
+            .query(&[("latest", latest)])
             .json(manifest)
             .send()
             .await?;

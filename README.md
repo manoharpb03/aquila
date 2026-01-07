@@ -152,11 +152,11 @@ cargo run --example s3_server --features "server s3 mock_auth"
 ```
 Publish v1.0 manifest and test.png
 ```shell
-aquila publish --dir ./assets --version "v1.0"
+aquila publish ./assets --version "v1.0"
 ```
 #### Streaming
 ```shell
-aquila publish --dir ./assets --version "v1.0" --stream
+aquila publish ./assets --version "v1.0" --stream
 ```
 Bevy example (uses v1.0 manifest and test.png)
 
@@ -207,13 +207,13 @@ set AQUILA_TOKEN=...
 You should have full access now! To mint a read-only public token:
 
 ```sh
-aquila mint-token --subject "release-build-v1.0"
+aquila mint-token  "release-build-v1.0"
 ```
 
 To publish all assets and a manifest:
 
 ```shell
-aquila publish --dir ./assets --version "v1.0"
+aquila publish ./assets --version "v1.0"
 ```
 Bevy example (uses v1.0 manifest and test.png)
 
@@ -230,7 +230,7 @@ aquila upload ./assets/test.png
 
 publish manifest and assets
 ```sh
-aquila publish --dir ./assets --version v1.0`
+aquila publish ./assets --version v1.0`
 ```
 
 > [!TIP]

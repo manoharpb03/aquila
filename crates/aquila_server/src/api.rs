@@ -179,10 +179,20 @@ pub async fn get_manifest<S: StorageBackend, A: AuthProvider>(
     Ok(Json(serde_json::from_slice::<serde_json::Value>(&data)?))
 }
 
+#[derive(serde::Deserialize)]
+pub struct PublishParams {
+    #[serde(default = "default_true")]
+    latest: bool,
+}
+
+fn default_true() -> bool {
+    true
+}
 /// POST /manifest
 pub async fn publish_manifest<S: StorageBackend, A: AuthProvider>(
     State(state): State<AppState<S, A>>,
     AuthenticatedUser(user): AuthenticatedUser,
+    Query(params): Query<PublishParams>,
     Json(manifest): Json<AssetManifest>,
 ) -> Result<impl IntoResponse, ApiError> {
     check_scope(&user, "write")?;
@@ -191,8 +201,12 @@ pub async fn publish_manifest<S: StorageBackend, A: AuthProvider>(
 
     state
         .storage
-        .write_manifest(&manifest.version, data)
+        .write_manifest(&manifest.version, data.clone())
         .await?;
+
+    if params.latest {
+        state.storage.write_manifest("latest", data).await?;
+    }
 
     Ok(StatusCode::CREATED)
 }

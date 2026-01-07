@@ -39,7 +39,7 @@ async fn main() -> anyhow::Result<()> {
     };
 
     // Publish the Manifest
-    client.publish_manifest(&manifest).await?;
+    client.publish_manifest(&manifest, true).await?;
 
     // Download the image to a different location
     let output_path = Path::new("downloaded_test.png");

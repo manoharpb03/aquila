@@ -8,7 +8,7 @@ repository = "https://github.com/NicoZweifel/aquila"
 
 [dependencies]
 aquila_core = { path = "../aquila_core" ,version = "0.3.0"}
-reqwest = {workspace = true, features = ["stream"]}
+reqwest = {workspace = true, features = ["stream", "query"] }
 tokio = { workspace = true, features = ["fs"] }
 anyhow = { workspace = true }
 sha2 = {workspace = true}

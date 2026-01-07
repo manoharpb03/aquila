@@ -31,11 +31,11 @@ Can be configured via flags or environment variables:
 
 * **Publish a version**:
     ```bash
-    aquila publish --dir ./assets --version v1.0.0
+    aquila publish ./assets --version v1.0.0
     ```
 * **Mint a long-lived token** (requires admin permissions):
     ```bash
-    aquila mint-token --subject "build_server" --duration 31536000
+    aquila mint-token  "build_server" --duration 31536000
     ```
 * **Generate a JWT Secret** (for server setup):
     ```bash

@@ -31,11 +31,11 @@
 //!
 //! * **Publish a version**:
 //!     ```bash
-//!     aquila publish --dir ./assets --version v1.0.0
+//!     aquila publish ./assets --version v1.0.0
 //!     ```
 //! * **Mint a long-lived token** (requires admin permissions):
 //!     ```bash
-//!     aquila mint-token --subject "build_server" --duration 31536000
+//!     aquila mint-token  "build_server" --duration 31536000
 //!     ```
 //! * **Generate a JWT Secret** (for server setup):
 //!     ```bash
@@ -77,23 +77,27 @@ enum Commands {
     /// Upload a single file
     Upload {
         path: PathBuf,
-        #[arg(long)]
+        #[arg(short, long)]
         /// Use streaming upload (recommended for very large files)
         stream: bool,
     },
     /// Publish a directory as a new Game Version
     Publish {
         /// The directory containing assets (e.g., "./assets")
-        #[arg(long)]
         dir: PathBuf,
 
         /// The version string (e.g., "0.1.0" or git sha)
-        #[arg(long)]
+        #[arg(short, long)]
         version: String,
 
         /// Use streaming upload (recommended for very large files)
-        #[arg(long)]
+        #[arg(short, long)]
         stream: bool,
+
+        /// Don't update the 'latest' version tag.
+        /// Use this when publishing patches for older versions.
+        #[arg(short, long, default_value = "true")]
+        no_latest: bool,
     },
     /// Download a file by hash
     Download {
@@ -109,15 +113,14 @@ enum Commands {
     GenerateSecret,
     MintToken {
         /// The subject name (e.g. "game_client_v1")
-        #[arg(short, long)]
         subject: String,
 
         /// Duration in seconds (default: 1 year)
-        #[arg(long)]
+        #[arg(short, long)]
         duration: Option<u64>,
 
         /// Optional scopes (comma separated, e.g. "read,write")
-        #[arg(long, value_delimiter = ',', default_value = "read")]
+        #[arg(short = 'S', long, value_delimiter = ',', default_value = "read")]
         scopes: Vec<String>,
     },
 }
@@ -161,6 +164,7 @@ async fn main() -> anyhow::Result<()> {
             dir,
             version,
             stream,
+            no_latest,
         } => {
             println!("🚀 Publishing version '{version}' from {dir:?}...");
             if stream {
@@ -216,9 +220,15 @@ async fn main() -> anyhow::Result<()> {
                 assets,
             };
 
-            client.publish_manifest(&manifest).await?;
+            let latest = !no_latest;
+            client.publish_manifest(&manifest, latest).await?;
 
             println!("✅ Successfully published version {version} with {count} assets.",);
+            if latest {
+                println!("🏷️  Tagged as 'latest'.");
+            } else {
+                println!("ℹ️  Skipped 'latest' tag update.");
+            }
         }
         Commands::Download { hash, output } => {
             println!("Downloading {hash}...");

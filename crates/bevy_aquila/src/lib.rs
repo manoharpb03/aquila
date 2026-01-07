@@ -57,6 +57,16 @@ pub struct AquilaConfig {
     pub version: String,
 }
 
+impl Default for AquilaConfig {
+    fn default() -> Self {
+        Self {
+            url: "http://localhost:3000".to_string(),
+            token: None,
+            version: "latest".to_string(),
+        }
+    }
+}
+
 pub struct AquilaPlugin;
 
 impl Plugin for AquilaPlugin {
