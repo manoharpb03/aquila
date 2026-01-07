@@ -1,13 +1,13 @@
 [package]
 name = "bevy_aquila"
-version = "0.3.2"
+version = "0.4.0"
 edition = "2024"
 description = "Aquila asset server bevy plugin"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/NicoZweifel/aquila"
 
 [dependencies]
-aquila_client = { path = "../aquila_client",version = "0.3.0" }
+aquila_client = { path = "../aquila_client",version = "0.4.0" }
 aquila_core = { path = "../aquila_core" ,version = "0.3.0"}
 bevy_asset = { version = "0.17" }
 bevy_ecs= { version = "0.17" }
