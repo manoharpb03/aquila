@@ -245,6 +245,7 @@ pub struct CreateTokenRequest {
     pub scopes: Option<Vec<String>>,
 }
 
+/// POST /auth/token
 pub async fn issue_token<S: StorageBackend, A: AuthProvider>(
     State(state): State<AppState<S, A>>,
     AuthenticatedUser(user): AuthenticatedUser,
@@ -271,6 +272,7 @@ pub async fn issue_token<S: StorageBackend, A: AuthProvider>(
     })))
 }
 
+/// GET /auth/callback (can be configured, see [`AquilaServerConfig`])
 pub async fn auth_callback<S: StorageBackend, A: AuthProvider>(
     State(state): State<AppState<S, A>>,
     Query(params): Query<AuthCallbackParams>,
