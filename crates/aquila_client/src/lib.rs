@@ -199,11 +199,11 @@ impl AquilaClient {
         let mut buffer = [0u8; 64 * 1024];
 
         loop {
-            let x = file.read(&mut buffer).await?;
-            if x == 0 {
+            let n = file.read(&mut buffer).await?;
+            if n == 0 {
                 break;
             }
-            hasher.update(&buffer[..x]);
+            hasher.update(&buffer[..n]);
         }
 
         let local_hash = hex::encode(hasher.finalize());

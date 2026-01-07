@@ -12,6 +12,7 @@ aquila_core = { path = "../aquila_core" ,version = "0.3.0"}
 bevy_asset = { version = "0.17" }
 bevy_ecs= { version = "0.17" }
 bevy_app ={version = "0.17"}
+bevy_reflect ={version = "0.17"}
 futures-lite = "2.0"
 tokio = { version = "1.49", features = ["sync", "rt-multi-thread"] }
 tracing = "0.1"

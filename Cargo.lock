@@ -1202,6 +1202,7 @@ dependencies = [
  "bevy_app",
  "bevy_asset",
  "bevy_ecs",
+ "bevy_reflect",
  "futures-lite",
  "tokio",
  "tracing",

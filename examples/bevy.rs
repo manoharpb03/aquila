@@ -21,11 +21,12 @@ fn main() {
     let url = std::env::var("AQUILA_URL").unwrap_or_else(|_| "http://localhost:3000".to_string());
 
     App::new()
-        .add_plugins(AquilaPlugin::new(AquilaConfig {
+        .insert_resource(AquilaConfig {
             url,
             token,
             version: "v1.0".to_string(),
-        }))
+        })
+        .add_plugins(AquilaPlugin)
         .add_plugins(DefaultPlugins)
         .add_systems(Startup, setup)
         .run();

@@ -39,13 +39,15 @@ use bevy_asset::io::{
     AssetReader, AssetReaderError, AssetSourceBuilder, AssetSourceId, PathStream, Reader, VecReader,
 };
 use bevy_ecs::prelude::*;
+use bevy_reflect::Reflect;
 use std::path::Path;
 use std::sync::Arc;
 use tokio::{runtime, sync::OnceCell};
 use tracing::{error, info, warn};
 
 /// Configuration for the Aquila Plugin
-#[derive(Resource, Clone)]
+#[derive(Resource, Clone, Reflect, Debug)]
+#[reflect(Resource, Clone, Debug)]
 pub struct AquilaConfig {
     /// The base URL e.g. "http://localhost:3000"
     pub url: String,
@@ -55,24 +57,20 @@ pub struct AquilaConfig {
     pub version: String,
 }
 
-pub struct AquilaPlugin {
-    pub config: AquilaConfig,
-}
-
-impl AquilaPlugin {
-    pub fn new(config: AquilaConfig) -> Self {
-        Self { config }
-    }
-}
+pub struct AquilaPlugin;
 
 impl Plugin for AquilaPlugin {
     fn build(&self, app: &mut App) {
-        let config = self.config.clone();
+        let cfg = app
+            .world()
+            .get_resource::<AquilaConfig>()
+            .cloned()
+            .expect("AquilaConfig must be inserted before adding AquilaPlugin");
 
         app.register_asset_source(
             AssetSourceId::Name("aquila".into()),
             AssetSourceBuilder::default()
-                .with_reader(move || Box::new(AquilaAssetReader::new(config.clone()))),
+                .with_reader(move || Box::new(AquilaAssetReader::new(cfg.clone()))),
         );
     }
 }
