@@ -32,7 +32,7 @@
 //!     ```bash
 //!     aquila publish ./assets --version v1.0.0
 //!     ```
-//! * **Mint a long-lived token** (requires admin permissions):
+//! * **Mint a long-lived token** (requires admin/write permissions):
 //!     ```bash
 //!     aquila mint-token  "build_server" --duration 31536000
 //!     ```
